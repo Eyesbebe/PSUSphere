@@ -1,4 +1,3 @@
-from studentorg.views import HomePageview, OrganizationList
 from studentorg.views import HomePageView, OrganizationList, OrganizationCreateView
 from studentorg import views
 
