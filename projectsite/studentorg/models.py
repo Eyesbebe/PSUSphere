@@ -1,5 +1,6 @@
 from django.db import models
 
+# Create your models here.
 class BaseModel (models.Model):
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -10,9 +11,9 @@ class BaseModel (models.Model):
 class College(BaseModel):
     college_name = models.CharField(max_length=150)
 
-    def __str__(self):
+    def __str__ (self):
         return self.college_name
-
+    
 class Program(BaseModel):
     prog_name = models.CharField(max_length=150)
     college = models.ForeignKey(College, on_delete=models.CASCADE)
@@ -29,8 +30,8 @@ class Organization(BaseModel):
     def __str__(self):
         return self.name
     
-class Student(BaseModel):
-    student_id = models.CharField(max_length=15)
+class Student (BaseModel):
+    student_id =models.CharField(max_length=15)
     lastname = models.CharField(max_length=25)
     firstname = models.CharField(max_length=25)
     middlename = models.CharField(max_length=25, blank=True, null=True)
@@ -38,8 +39,9 @@ class Student(BaseModel):
 
     def __str__(self):
         return f"{self.lastname}, {self.firstname}"
-
+    
 class OrgMember(BaseModel):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
-    date_joined = models.DateField()
+    date_joined = models.DateTimeField()
+    
