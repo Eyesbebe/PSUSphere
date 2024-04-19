@@ -5,4 +5,4 @@ from .models import Organization
 class OrganizationForm(ModelForm):
     class Meta:
         model = Organization
-        fields = "_all_"
+        fields = "__all__"
