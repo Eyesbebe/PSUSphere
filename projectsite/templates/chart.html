@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Page Title</title>
+    <!-- Include Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Other CSS and meta tags -->
+</head>
+<body>
+<div class="content">
+  <div class="container-fluid" >
+      <h4 class="page-title">ChartJS</h4>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card" style="box-shadow: 4px 4px 12px #537188; border-radius: 6px;">
+            <div class="card-header">
+              <div class="card-title">Students Count by Program</div>
+            </div>
+            <div class="card-body">
+              <div class="chart-container" style="height: 400px;"">
+                <canvas id="studentChart"></canvas> <!-- Canvas for the student chart -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card" style="box-shadow: 4px 4px 12px #537188; border-radius: 6px;">
+            <div class="card-header">
+              <div class="card-title">Organization Category</div>
+            </div>
+            <div class="card-body">
+              <div class="chart-container" style="height: 400px;">
+                <canvas id="organizationChart"></canvas> <!-- Canvas for the student chart -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="card" style="box-shadow: 4px 4px 12px #537188; border-radius: 6px;">
+            <div class="card-header">
+              <div class="card-title">Students Count by Program</div>
+            </div>
+            <div class="card-body">
+              <div class="chart-container">
+                <canvas id="studentPieChart"></canvas> <!-- Canvas for the student chart -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card" style="box-shadow: 4px 4px 12px #537188; border-radius: 6px;">
+            <div class="card-header">
+              <div class="card-title">Count of Students by Organization</div>
+            </div>
+            <div class="card-body">
+              <div class="chart-container">
+                <canvas id="orgMemberPieChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card" style="box-shadow: 4px 4px 12px #537188; border-radius: 6px;">
+            <div class="card-header">
+              <div class="card-title">Count of Students by Colleges</div>
+            </div>
+            <div class="card-body">
+              <div class="chart-container">
+                <canvas id="collegePieChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+<script>
+  function loadStudentChartData() {
+      fetch("/student-count-by-program/")  // Update with your endpoint URL
+        .then((response) => response.json())
+        .then((data) => {
+          var labels = data.labels;
+          var counts = data.counts;
+          var studentChart = document.getElementById("studentChart").getContext("2d");
+  
+          new Chart(studentChart, {
+            type: "bar",
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'Student Counts',
+                data: counts,
+                backgroundColor: '#00ADB5',
+                borderColor: '#00ADB5',
+                borderWidth: 0
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }]
+              }
+            }
+          });
+        })
+        .catch((error) => console.error("Error:", error));
+  }
+  function loadOrganizationChartData() {
+    fetch("/organization-graph-data/")  // Update with your endpoint URL for organization data
+      .then((response) => response.json())
+      .then((data) => {
+        var labels = data.labels;
+        var counts = data.counts;
+        var organizationChart = document.getElementById("organizationChart").getContext("2d");
+
+        new Chart(organizationChart, {
+          type: "doughnut",
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Organization Counts',
+              data: counts,
+              backgroundColor: [
+                '#FF6384', // Red
+                '#36A2EB', // Blue
+                '#FFCE56', // Yellow
+                // Add more colors as needed
+            ],
+              borderColor: '#ffffff', // Border color
+              borderWidth: 1
+            }]
+          },
+          options: {
+        responsive: true,
+        maintainAspectRatio: false,
+          }
+        });
+      })
+    }
+    function loadPieChartStudentsData() {
+      fetch("/pie-chart/students/")  // Endpoint for student data
+        .then((response) => response.json())
+        .then((data) => {
+          var labels = data.labels;
+          var counts = data.counts;
+          var studentChart = document.getElementById("studentPieChart").getContext("2d");
+  
+          new Chart(studentPieChart, {
+            type: "line",
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'Student Distribution by Program',
+                data: counts,
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#8A2BE2', '#20B2AA'], // Colors for each pie slice
+                borderWidth: 6
+              }]
+            },
+            options: {
+              responsive: true
+            }
+          });
+        })
+        .catch((error) => console.error("Error:", error));
+  }
+    function loadPieChartOrgMembersData() {
+      fetch("/pie-chart/org-members/")  // Endpoint for organization members data
+        .then((response) => response.json())
+        .then((data) => {
+          var labels = data.labels;
+          var counts = data.counts;
+          var orgMemberChart = document.getElementById("orgMemberPieChart").getContext("2d");
+
+          new Chart(orgMemberChart, {
+            type: "bar",
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'Organization Member Distribution',
+                data: counts,
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#8A2BE2', '#20B2AA'], // Colors for each pie slice
+                borderWidth: 4
+              }]
+            },
+            options: {
+              responsive: true
+            }
+          });
+        })
+        .catch((error) => console.error("Error:", error));
+    }
+    function loadCollegePieChartData() {
+      fetch("/pie-chart/colleges/")  // Endpoint for college data
+        .then((response) => response.json())
+        .then((data) => {
+          var labels = data.college_labels;
+          var counts = data.college_counts;
+          var collegePieChart = document.getElementById("collegePieChart").getContext("2d");
+  
+          new Chart(collegePieChart, {
+            type: "pie",
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'College Distribution',
+                data: counts,
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#8A2BE2', '#20B2AA'], // Colors for each pie slice
+                borderWidth: 4
+              }]
+            },
+            options: {
+              responsive: true
+            }
+          });
+        })
+        .catch((error) => console.error("Error:", error));
+  }
+  loadStudentChartData();
+  loadOrganizationChartData();
+  loadPieChartStudentsData();
+  loadPieChartOrgMembersData();
+  loadCollegePieChartData();
+</script>
+  
+
+{% endblock %}
