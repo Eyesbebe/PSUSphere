@@ -1,4 +1,7 @@
-{% extends 'base.html' %} {% load static %} {% block content %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
 <div class="content">
     <div class="container-fluid">
         <h4 class="page-title">Delete Program</h4>
@@ -9,19 +12,15 @@
                         <div class="card-title">Delete Program</div>
                         <div class="card-category">PSU Beloved</div>
                     </div>
-
-                    <div class="col-md-6">
                     <div class="card-body">
-                        <form class="" action="" method="post" novalidate>
-                            {% csrf_token %} {% include 'includes/form.html' %}
+                        <form action="" method="post" novalidate>
+                            {% csrf_token %}
+                            {% include 'includes/form.html' %}
 
                             <div class="form-group">
-                                <div class="col-md-12 col-sm-3">
-                                    <button type="submit" class="btn btn-primary btn-rounded">Submit</button>
-                                </div>
+                                <button type="submit" class="btn btn-primary btn-rounded">Submit</button>
                             </div>
                         </form>
-                    </div>
                     </div>
                 </div>
             </div>
